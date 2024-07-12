@@ -1,7 +1,10 @@
 package com.rusiruchapana.security.config;
 
+import com.rusiruchapana.security.service.MyUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
@@ -17,6 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    private MyUserDetailService myUserDetailService;
+    public SecurityConfiguration(MyUserDetailService myUserDetailService) {
+        this.myUserDetailService = myUserDetailService;
+    }
+
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(registry->{
@@ -28,21 +38,19 @@ public class SecurityConfiguration {
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
     }
+
+
     @Bean
     public UserDetailsService userDetailsService(){
-        UserDetails normalUser = User.builder()
-                .username("rusiru")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER")
-                .build();
+        return myUserDetailService;
+    }
 
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("9876"))
-                .roles("ADMIN","USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(normalUser,admin);
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
     }
 
     @Bean
