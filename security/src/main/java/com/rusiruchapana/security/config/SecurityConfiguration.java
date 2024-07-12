@@ -20,8 +20,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(registry->{
                 registry.requestMatchers("/home").permitAll();
-                registry.requestMatchers("/admin/").hasRole("ADMIN");
-                registry.requestMatchers("/user/").hasRole("USER");
+                registry.requestMatchers("/admin/home").hasRole("ADMIN");
+                registry.requestMatchers("/user/home").hasRole("USER");
                 registry.anyRequest().authenticated();
         })
                 .formLogin(formLogin->{formLogin.permitAll();})
@@ -38,7 +38,7 @@ public class SecurityConfiguration {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password("$2a$10$C59dwI9U0/AfosOcR5MwROsHJd729U4l6pr8JcK/cEBXb8Yp4hYam")
-                .roles("ADMIN")
+                .roles("ADMIN","USER")
                 .build();
 
         return new InMemoryUserDetailsManager(normalUser,admin);
