@@ -19,4 +19,5 @@ public class MyUser {
     private Long id;
     private String username;
     private String password;
+    private String role;
 }
