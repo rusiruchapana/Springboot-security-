@@ -29,7 +29,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(registry->{
+        return httpSecurity
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+                .authorizeHttpRequests(registry->{
                 registry.requestMatchers("/home","/save").permitAll();
                 registry.requestMatchers("/admin/home").hasRole("ADMIN");
                 registry.requestMatchers("/user/home").hasRole("USER");
