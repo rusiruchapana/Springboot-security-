@@ -33,8 +33,13 @@ public class SecurityConfiguration {
                 .roles("USER")
                 .build();
 
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("$2a$10$C59dwI9U0/AfosOcR5MwROsHJd729U4l6pr8JcK/cEBXb8Yp4hYam")
+                .roles("ADMIN")
+                .build();
 
-        return new InMemoryUserDetailsManager(normalUser);
+        return new InMemoryUserDetailsManager(normalUser,admin);
     }
 
 }
