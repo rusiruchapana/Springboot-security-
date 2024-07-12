@@ -31,13 +31,13 @@ public class SecurityConfiguration {
     public UserDetailsService userDetailsService(){
         UserDetails normalUser = User.builder()
                 .username("rusiru")
-                .password("$2a$10$5Kio.LwpgcsHsJSmGuDcaenu0n/ya/55bA5ZiaHOliwRvm2M9szSm")
+                .password("$2a$12$eUWy89tjOy110QWh8N7KgONmS2w4MSR25Z.qezpkxiCT4fBkHDzvW")
                 .roles("USER")
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("$2a$10$C59dwI9U0/AfosOcR5MwROsHJd729U4l6pr8JcK/cEBXb8Yp4hYam")
+                .password("$2a$12$ln0klzRaiGRqZrmbZLW1Qe2G0qNzZI7ltHTkQXSiQlfyumeofUvVC")
                 .roles("ADMIN","USER")
                 .build();
 
